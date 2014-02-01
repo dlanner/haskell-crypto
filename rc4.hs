@@ -1,10 +1,7 @@
 import Data.Bits (xor)
 import Text.Printf (printf)
 import Data.Char (toUpper)
-import Numeric
-
-format_hex :: [Int] -> [Char]
-format_hex bytes = map toUpper (concat $ map ((\x -> if (length x) == 1 then "0" ++ x else x ) . (\x -> showHex x "")) bytes)
+import Numeric (showHex)
 
 rc4 :: [Char] -> [Char] -> [Char]
 rc4 key plaintext = ciphertext
@@ -41,6 +38,11 @@ swapElts i j ls = [get k x | (k, x) <- zip [0..length ls - 1] ls]
                 | k == j = ls !! i
                 | otherwise = x
 
+format_hex :: [Int] -> [Char]
+format_hex bytes = map toUpper (concat $ map ((\x -> if (length x) == 1 then "0" ++ x else x ) . (\x -> showHex x "")) bytes)
+
+-- TODO: Tests
+-- http://book.realworldhaskell.org/read/testing-and-quality-assurance.html
 -- Test vectors from the Wikipedia RC4 page: https://en.wikipedia.org/wiki/RC4#Test_vectors
 -- rc4 "Key" "Plaintext"         == "BBF316E8D940AF0AD3"
 -- rc4 "Wiki" "pedia"            == "1021BF0420"
