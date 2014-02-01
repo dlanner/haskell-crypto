@@ -1,13 +1,15 @@
 import Data.Bits (xor)
 import Text.Printf (printf)
+import Data.Char (toUpper)
 import Numeric
 
---rc4' :: [Char] -> [Char] -> String
---rc4' key plaintext = mapM (printf "%02X") (rc4 key plaintext)
+format_hex :: [Int] -> [Char]
+format_hex bytes = map toUpper (concat $ map ((\x -> if (length x) == 1 then "0" ++ x else x ) . (\x -> showHex x "")) bytes)
 
-rc4 :: [Char] -> [Char] -> [Int]
-rc4 key plaintext = ciphertext_bytes
-  where ciphertext_bytes = zipWith (xor) keystream (map fromEnum plaintext)
+rc4 :: [Char] -> [Char] -> [Char]
+rc4 key plaintext = ciphertext
+  where ciphertext = format_hex ciphertext_bytes
+        ciphertext_bytes = zipWith (xor) keystream (map fromEnum plaintext)
         keystream = prga key (length plaintext)
 
 prga :: [Char] -> Int -> [Int]
