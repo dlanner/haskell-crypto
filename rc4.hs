@@ -39,7 +39,7 @@ swapElts i j ls = [get k x | (k, x) <- zip [0..length ls - 1] ls]
                 | otherwise = x
 
 format_hex :: [Int] -> [Char]
-format_hex bytes = map toUpper (concat $ map ((\x -> if (length x) == 1 then "0" ++ x else x ) . (\x -> showHex x "")) bytes)
+format_hex bytes = map toUpper (concatMap ((\x -> if (length x) == 1 then "0" ++ x else x ) . (\x -> showHex x "")) bytes)
 
 -- TODO: Tests
 -- http://book.realworldhaskell.org/read/testing-and-quality-assurance.html
