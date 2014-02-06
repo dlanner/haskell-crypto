@@ -1,7 +1,10 @@
+module RC4 where
+
 import Data.Bits (xor)
 import Text.Printf (printf)
-import Data.Char (toUpper)
-import Numeric (showHex)
+import Data.List.Split (chunksOf)
+import Data.Char (toUpper, chr)
+import Numeric (showHex, readHex)
 
 rc4 :: [Char] -> [Char] -> [Char]
 rc4 key plaintext = ciphertext
@@ -41,9 +44,5 @@ swapElts i j ls = [get k x | (k, x) <- zip [0..length ls - 1] ls]
 format_hex :: [Int] -> [Char]
 format_hex bytes = map toUpper (concatMap ((\x -> if (length x) == 1 then "0" ++ x else x ) . (\x -> showHex x "")) bytes)
 
--- TODO: Tests
--- http://book.realworldhaskell.org/read/testing-and-quality-assurance.html
--- Test vectors from the Wikipedia RC4 page: https://en.wikipedia.org/wiki/RC4#Test_vectors
--- rc4 "Key" "Plaintext"         == "BBF316E8D940AF0AD3"
--- rc4 "Wiki" "pedia"            == "1021BF0420"
--- rc4 "Secret" "Attack at dawn" == "45A01F645FC35B383552544B9BF5"
+fromHex :: [Char] -> [Char]
+fromHex text = map (\x -> chr $ fst $ head $ readHex x) $ chunksOf 2 text
